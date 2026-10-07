@@ -1,0 +1,83 @@
+name: Mikan build
+on:
+  push:
+    branches:
+      - mikan
+  pull_request:
+    branches:
+      - mikan
+  schedule:
+    - cron: "7 6 * * *"
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  MIKAN_GIT: https://codeberg.org/1lab/mikan
+  MIKAN_RTS: +RTS -M14G -RTS
+
+jobs:
+  build-cubical:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout cubical
+        uses: actions/checkout@v7
+        with:
+          ref: ${{ github.event_name == 'schedule' && 'mikan' || '' }}
+
+      - name: Resolve mikan main
+        id: mikan
+        run: |
+          rev=$(git ls-remote "${MIKAN_GIT}" refs/heads/main | cut -f1)
+          test -n "${rev}"
+          echo "mikan main is ${rev}"
+          echo "rev=${rev}" >> "${GITHUB_OUTPUT}"
+
+      - name: Install nix
+        uses: cachix/install-nix-action@v31
+        with:
+          github_access_token: ${{ secrets.GITHUB_TOKEN }}
+          extra_nix_config: |
+            extra-substituters = https://mikan.cachix.org
+            extra-trusted-public-keys = mikan.cachix.org-1:l1i58iAKFlQr1VcWPaYXExVYoVVPx8vXs+jfEttRFhA=
+
+      - name: Restore and save nix store
+        uses: nix-community/cache-nix-action@v7
+        with:
+          primary-key: nix-${{ runner.os }}-mikan-${{ steps.mikan.outputs.rev }}
+          restore-prefixes-first-match: nix-${{ runner.os }}-mikan-
+          gc-max-store-size-linux: 4G
+          purge: true
+          purge-prefixes: nix-${{ runner.os }}-mikan-
+          purge-created: 0
+          purge-primary-key: never
+
+      - name: Install mikan
+        run: |
+          out=$(nix build "git+${MIKAN_GIT}?rev=${{ steps.mikan.outputs.rev }}#default^bin" \
+                  --out-link "${RUNNER_TEMP}/mikan" --print-out-paths)
+          echo "${out}/bin" >> "${GITHUB_PATH}"
+
+      - name: Mikan version
+        run: mikan --version
+
+      - name: Restore library cache
+        uses: actions/cache/restore@v6
+        id: cache-library-restore
+        with:
+          path: ./_build
+          key: mikan-library-${{ runner.os }}-${{ steps.mikan.outputs.rev }}-${{ hashFiles('Cubical/**', 'cubical.agda-lib') }}
+          restore-keys: |
+            mikan-library-${{ runner.os }}-${{ steps.mikan.outputs.rev }}-
+
+      - name: Build cubical
+        run: mikan --build-library -j ${MIKAN_RTS}
+
+      - name: Save library cache
+        if: always() && steps.cache-library-restore.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v6
+        with:
+          path: ./_build
+          key: ${{ steps.cache-library-restore.outputs.cache-primary-key }}

@@ -8,7 +8,7 @@ module Cubical.Tactics.Reflection where
 
 open import Cubical.Foundations.Prelude
 
-open import Agda.Builtin.Reflection hiding (Type)
+open import Agda.Builtin.Reflection
 
 open import Cubical.Data.Bool
 open import Cubical.Data.List

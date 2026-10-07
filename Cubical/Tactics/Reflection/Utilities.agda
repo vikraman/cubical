@@ -2,7 +2,7 @@ module Cubical.Tactics.Reflection.Utilities where
 
 open import Cubical.Foundations.Prelude hiding (Type)
 
-open import Agda.Builtin.Reflection hiding (Type)
+open import Agda.Builtin.Reflection
 open import Agda.Builtin.String
 open import Agda.Builtin.Nat using () renaming (_==_ to _=ℕ_)
 

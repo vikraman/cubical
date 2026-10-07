@@ -10,10 +10,9 @@ module Cubical.Tactics.Reflection.Variables where
 
 open import Cubical.Foundations.Prelude hiding (Type)
 
-open import Agda.Builtin.Reflection hiding (Type)
+open import Agda.Builtin.Reflection
 open import Agda.Builtin.String
 open import Agda.Builtin.Float
-open import Agda.Builtin.Word
 open import Agda.Builtin.Char
 open import Agda.Builtin.Nat using () renaming (_==_ to _=ℕ_)
 
@@ -40,7 +39,6 @@ private
 
   _=L_ : Literal → Literal → Bool
   nat n =L nat m = n =ℕ m
-  word64 n =L word64 m = primWord64ToNat n =ℕ primWord64ToNat m
   float x =L float y = primFloatEquality x y
   char c =L char c' = primCharEquality c c'
   string s =L string s' = primStringEquality s s'

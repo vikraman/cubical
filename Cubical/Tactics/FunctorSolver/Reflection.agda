@@ -3,7 +3,7 @@ module Cubical.Tactics.FunctorSolver.Reflection where
 
 open import Cubical.Foundations.Prelude
 
-open import Agda.Builtin.Reflection hiding (Type)
+open import Agda.Builtin.Reflection
 open import Agda.Builtin.String
 
 open import Cubical.Data.Bool

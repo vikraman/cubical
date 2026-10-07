@@ -3,7 +3,7 @@ module Cubical.Tactics.MonoidSolver.Reflection where
 
 open import Cubical.Foundations.Prelude hiding (Type)
 
-open import Agda.Builtin.Reflection hiding (Type)
+open import Agda.Builtin.Reflection
 open import Agda.Builtin.String
 
 open import Cubical.Reflection.Base

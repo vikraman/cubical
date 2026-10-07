@@ -92,7 +92,7 @@ List→ΣFormat (x ∷ y ∷ xs) = leaf x , List→ΣFormat (y ∷ xs)
 
 -- Define a reflected type with the shape of the Σ-type described by a ΣFormat.
 -- The type arguments to the Σ are filled in with unsolved metavariables.
-ΣFormat→Ty : ΣFormat → R.Type
+ΣFormat→Ty : ΣFormat → R.Type'
 ΣFormat→Ty unit = R.def (quote Unit) []
 ΣFormat→Ty (leaf _) = R.unknown
 ΣFormat→Ty (sig₁ , sig₂) =
@@ -110,12 +110,12 @@ recordName→isoTy name σ =
   σTy = ΣFormat→Ty σ
 
   -- Recurses on the type of the named record type
-  go : List R.ArgInfo → R.Type → R.TC R.Term
+  go : List R.ArgInfo → R.Type' → R.TC R.Term
   go acc (R.pi (R.arg i argTy) (R.abs s ty)) =
     -- If the record takes a parameter, the returned isomorphism is likewise parameterized
     liftTC (λ t → R.pi (R.arg i' argTy) (R.abs s t)) (go (i ∷ acc) ty)
     where
-    i' = R.arg-info R.hidden (R.modality R.relevant R.quantity-ω)
+    i' = R.arg-info R.hidden
   go acc (R.agda-sort _) =
     -- Main case, constructs isomorphism type
     R.returnTC (R.def (quote Iso) (R.def name (makeArgs 0 [] acc) v∷ σTy v∷ []))
@@ -167,7 +167,7 @@ convertClauses al term = fixIfEmpty (List.filterMap makeClause al)
 
 -- Apply functions to the telescope and pattern parts of a clause
 mapClause :
-  (List (String × R.Arg R.Type) → List (String × R.Arg R.Type))
+  (List (String × R.Arg R.Type') → List (String × R.Arg R.Type'))
   → (List (R.Arg R.Pattern) → List (R.Arg R.Pattern))
   → (R.Clause → R.Clause)
 mapClause f g (R.clause tel ps t) = R.clause (f tel) (g ps) t

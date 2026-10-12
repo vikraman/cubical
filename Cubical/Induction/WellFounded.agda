@@ -8,8 +8,8 @@ module _ {ℓ ℓ'} {A : Type ℓ} (_<_ : A → A → Type ℓ') where
   WFRec : ∀{ℓ''} → (A → Type ℓ'') → A → Type _
   WFRec P x = ∀ y → y < x → P y
 
-  data Acc (x : A) : Type (ℓ-max ℓ ℓ') where
-    acc : WFRec Acc x → Acc x
+  data Acc : A → Type (ℓ-max ℓ ℓ') where
+    acc : ∀ {x} → WFRec Acc x → Acc x
 
   WellFounded : Type _
   WellFounded = ∀ x → Acc x

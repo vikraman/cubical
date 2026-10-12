@@ -169,8 +169,8 @@ sett-repr {ℓ} X ix = (Rep , ixRep , isEmbIxRep) , seteq X Rep ix ixRep eqImIxR
   eqImIxRep : eqImage ix ixRep
   eqImIxRep = (λ x → ∣ Q.[ x ] , refl ∣₁) , Q.elimProp (λ _ → P.squash₁) (λ b → ∣ b , refl ∣₁)
 
-data DeepMonicPresentation (a : V ℓ) : Type (ℓ-suc ℓ) where
-  dmp : (mp@((_ , ix , _) , _) : MonicPresentation a)
+data DeepMonicPresentation {ℓ} : V ℓ → Type (ℓ-suc ℓ) where
+  dmp : ∀ {a} (mp@((_ , ix , _) , _) : MonicPresentation a)
       → (rec : ∀ x → DeepMonicPresentation (ix x))
       → DeepMonicPresentation a
 

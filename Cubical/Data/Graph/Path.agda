@@ -72,9 +72,12 @@ module _ {G : Graph ℓv ℓe} where
     Path→PathWithLen pnil = 0 , lift refl
     Path→PathWithLen (pcons e P) = suc (Path→PathWithLen P .fst) , _ , e , Path→PathWithLen P .snd
 
+    PathWithLen→Path' : ∀ n {v w} → PathWithLen n v w → Path G v w
+    PathWithLen→Path' 0 q = subst (Path G _) (q .lower) pnil
+    PathWithLen→Path' (suc n) (_ , e , pwl) = pcons e (PathWithLen→Path' n pwl)
+
     PathWithLen→Path : ∀ {v w} → Σ[ n ∈ ℕ ] PathWithLen n v w → Path G v w
-    PathWithLen→Path (0 , q) = subst (Path G _) (q .lower) pnil
-    PathWithLen→Path (suc n , _ , e , pwl) = pcons e (PathWithLen→Path (n , pwl))
+    PathWithLen→Path (n , pwl) = PathWithLen→Path' n pwl
 
     Path→PWL→Path : ∀ {v w} P → PathWithLen→Path {v} {w} (Path→PathWithLen P) ≡ P
     Path→PWL→Path {v} pnil = substRefl {B = Path G v} pnil

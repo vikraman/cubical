@@ -117,6 +117,6 @@ module _ (A : AdditiveCategory ℓ ℓ') where
 
     open AdditiveCategoryStr
     AdditiveQuotient : AdditiveCategory ℓ (ℓ-max ℓ' ℓq)
-    AdditiveQuotient .preaddcat = A/~
-    AdditiveQuotient .addit .zero = zero/~
-    AdditiveQuotient .addit .biprod = biprod/~
+    AdditiveQuotient .AdditiveCategory.preaddcat = A/~
+    AdditiveQuotient .AdditiveCategory.addit .zero = zero/~
+    AdditiveQuotient .AdditiveCategory.addit .biprod = biprod/~

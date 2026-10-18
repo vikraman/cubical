@@ -22,8 +22,9 @@ record Cocone ℓ {ℓd ℓv ℓe} {I : Graph ℓv ℓe} (F : Diag ℓd I) (X : 
     com : ∀ {j k} (f : Edge I j k) → leg k ∘ F <$g> f ≡ leg j
 
   postcomp : ∀ {ℓ'} {Y : Type ℓ'} → (X → Y) → Cocone ℓ' F Y
-  leg (postcomp h) j = h ∘ leg j
-  com (postcomp h) f = cong (h ∘_) (com f)
+  postcomp h = record
+    { leg = λ j → h ∘ leg j
+    ; com = λ f → cong (h ∘_) (com f) }
 
 open Cocone public
 

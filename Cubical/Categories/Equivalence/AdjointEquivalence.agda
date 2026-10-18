@@ -33,7 +33,7 @@ module _ (C : Category ℓC ℓ'C) (D : Category ℓD ℓ'D) where
     reverse-triangle : TriangleIdentities inv fun
                                           (NatIso.trans (symNatIso ε))
                                           (NatIso.trans (symNatIso η))
-    reverse-triangle .Δ₁ d =
+    reverse-triangle .TriangleIdentities.Δ₁ d =
         sym (C.⋆IdR _)
       ∙ cong (λ x → (  inv ⟪ NatIso.trans (symNatIso ε) ⟦ d ⟧ ⟫
                 ⋆⟨ C ⟩ NatIso.trans (symNatIso η) ⟦ inv ⟅ d ⟆ ⟧)
@@ -50,7 +50,7 @@ module _ (C : Category ℓC ℓ'C) (D : Category ℓD ℓ'D) where
       ∙ sym (inv.F-seq _ _)
       ∙ cong (λ x → inv ⟪ x ⟫) (isIso.sec (NatIso.nIso ε d))
       ∙ inv.F-id
-    reverse-triangle .Δ₂ c =
+    reverse-triangle .TriangleIdentities.Δ₂ c =
         sym (D.⋆IdL _)
       ∙ cong (λ x →   x
                ⋆⟨ D ⟩ (NatIso.trans (symNatIso ε) ⟦ fun ⟅ c ⟆ ⟧

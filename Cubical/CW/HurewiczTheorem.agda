@@ -240,7 +240,7 @@ module _ where
          cofib→cofibCW≡push a with (n ≟ᵗ n)
          ... | lt x = ⊥.rec (<ᵗ-irrefl x)
          ... | eq x =
-           flipSquare (help (cong suc (cong suc x)) (sym (isSetℕ _ _ _ _)))
+           flipSquare (help a (cong suc (cong suc x)) (sym (isSetℕ _ _ _ _)))
            where
            cool : cellMapSˢᵏᵉˡFunGenGen∙ Xsk _ x₀
                    (fst f') (snd f') (suc n) (eq refl)
@@ -255,7 +255,7 @@ module _ where
             ∙ λ i → (λ j → transportRefl (snd f' (j ∧ ~ i)) (j ∧ i))
                    ∙ λ j → transportRefl (snd f' (~ i ∨ j)) (i ∨ j)
 
-           help : (w : suc (suc n) ≡ suc (suc n)) (t : refl ≡ w)
+           help : (a : _) (w : suc (suc n) ≡ suc (suc n)) (t : refl ≡ w)
              → Square
                ((push (cellMapSˢᵏᵉˡFunGenGen Xsk (suc n) x₀ (fst f')
                        (snd f') (suc n) (suc n ≟ᵗ suc (suc n)) a)
@@ -269,7 +269,7 @@ module _ where
                                  (fst f' (invEq (SαEqGen (suc n) (suc n) (eq w)
                                  (suc n ≟ᵗ suc (suc n))) (inl a))))
                            (sym (cong sym t)) ∙ transportRefl _) i))
-           help with (n ≟ᵗ suc n)
+           help a with (n ≟ᵗ suc n)
            ... | lt w =
              J> (cong₂ _∙_
                    refl

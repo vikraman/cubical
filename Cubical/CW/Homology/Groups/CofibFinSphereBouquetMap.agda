@@ -172,35 +172,34 @@ module _ {c1 c2 : ℕ} {n : ℕ} (α : FinSphereBouquetMap c1 c2 n) where
        ∙ cong (Bouquet→ΩBouquetSusp (Fin c2) (λ _ → S₊∙ (suc n)))
               (F2'≡id (α (inr (x , a))))
 
-  module _
-   (a b : Fin (SphereBouquet/CardGen c1 c2 (suc n)
+  pathlemma :
+     (a b : Fin (SphereBouquet/CardGen c1 c2 (suc n)
                  (suc n ≟ᵗ suc n) (suc n ≟ᵗ suc (suc n))) → ℤ)
-   (ak : ∂ (SphereBouquet/ˢᵏᵉˡ α) n .fst a ≡ (λ _ → 0))
-   (bk : ∂ (SphereBouquet/ˢᵏᵉˡ α) n .fst b ≡ (λ _ → 0))
-   (r : Σ[ t ∈ (Fin (SphereBouquet/CardGen c1 c2 (suc (suc n))
-                     (suc (suc n) ≟ᵗ suc n) (suc (suc n) ≟ᵗ suc (suc n))) → ℤ) ]
-          ∂ (SphereBouquet/ˢᵏᵉˡ α) (suc n) .fst t ≡ λ q → a q - b q) where
-
-    pathlemma : Path (ℤ[]/ImSphereMap .fst)
+     (ak : ∂ (SphereBouquet/ˢᵏᵉˡ α) n .fst a ≡ (λ _ → 0))
+     (bk : ∂ (SphereBouquet/ˢᵏᵉˡ α) n .fst b ≡ (λ _ → 0))
+     (r : Σ[ t ∈ (Fin (SphereBouquet/CardGen c1 c2 (suc (suc n))
+                       (suc (suc n) ≟ᵗ suc n) (suc (suc n) ≟ᵗ suc (suc n))) → ℤ) ]
+            ∂ (SphereBouquet/ˢᵏᵉˡ α) (suc n) .fst t ≡ λ q → a q - b q)
+    → Path (ℤ[]/ImSphereMap .fst)
       [ HₙSphereBouquetⁿ/→ℤ[]/ImSphereMap-fun
           (suc n ≟ᵗ suc n) (suc n ≟ᵗ suc (suc n)) a ]
       [ HₙSphereBouquetⁿ/→ℤ[]/ImSphereMap-fun
           (suc n ≟ᵗ suc n) (suc n ≟ᵗ suc (suc n)) b ]
-    pathlemma  with (n ≟ᵗ n) | (n ≟ᵗ suc n) | (suc n ≟ᵗ n)
-    ... | lt x | st | ah = ⊥.rec (<ᵗ-irrefl x)
-    ... | eq x | lt y | lt z = ⊥.rec (¬-sucℕ-<ᵗ z)
-    ... | eq x | lt y | eq z = ⊥.rec (falseDichotomies.eq-eq (x , sym z))
-    ... | eq x | lt y | gt z =
-      PT.rec (squash/ _ _) (λ apt →
-       eq/ _ _ ∣ (fst r)
-       , ((λ i → bouquetDegree α .fst (fst r))
-       ∙ funExt⁻ (cong fst (bouquetDegreeSusp α)) (fst r)
-       ∙ λ i → bouquetDegree (bouquetSusp→Charac a b apt x
-                               (isSetℕ _ _ refl x) (~ i)) .fst (fst r))
-       ∙ snd r ∣₁) α∙
-    ... | eq x | eq y | ah = ⊥.rec (falseDichotomies.eq-eq (x , y))
-    ... | eq x | gt y | ah = ⊥.rec (¬-sucℕ-<ᵗ y)
-    ... | gt x | st | ah = refl
+  pathlemma a b ak bk r with (n ≟ᵗ n) | (n ≟ᵗ suc n) | (suc n ≟ᵗ n)
+  ... | lt x | st | ah = ⊥.rec (<ᵗ-irrefl x)
+  ... | eq x | lt y | lt z = ⊥.rec (¬-sucℕ-<ᵗ z)
+  ... | eq x | lt y | eq z = ⊥.rec (falseDichotomies.eq-eq (x , sym z))
+  ... | eq x | lt y | gt z =
+    PT.rec (squash/ _ _) (λ apt →
+     eq/ _ _ ∣ (fst r)
+     , ((λ i → bouquetDegree α .fst (fst r))
+     ∙ funExt⁻ (cong fst (bouquetDegreeSusp α)) (fst r)
+     ∙ λ i → bouquetDegree (bouquetSusp→Charac a b apt x
+                             (isSetℕ _ _ refl x) (~ i)) .fst (fst r))
+     ∙ snd r ∣₁) α∙
+  ... | eq x | eq y | ah = ⊥.rec (falseDichotomies.eq-eq (x , y))
+  ... | eq x | gt y | ah = ⊥.rec (¬-sucℕ-<ᵗ y)
+  ... | gt x | st | ah = refl
 
 
   HₙSphereBouquetⁿ/→ℤ[]/ImSphereMap :

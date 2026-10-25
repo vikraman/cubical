@@ -209,18 +209,23 @@ module _ {ℓ : Level} where
 
   DistLatticeStr.isDistLattice (snd (F-ob CompOpenDistLattice X)) = makeIsDistLattice∧lOver∨l
     isSetNatTrans
-    (λ _ _ _ → makeNatTransPath (funExt₂
-                 (λ A _ → ZariskiLattice A .snd .DistLatticeStr.∨lAssoc _ _ _)))
-    (λ _ → makeNatTransPath (funExt₂ (λ A _ → ZariskiLattice A .snd .DistLatticeStr.∨lRid _)))
-    (λ _ _ → makeNatTransPath (funExt₂ (λ A _ → ZariskiLattice A .snd .DistLatticeStr.∨lComm _ _)))
-    (λ _ _ _ → makeNatTransPath (funExt₂
-                 (λ A _ → ZariskiLattice A .snd .DistLatticeStr.∧lAssoc _ _ _)))
-    (λ _ → makeNatTransPath (funExt₂ (λ A _ → ZariskiLattice A .snd .DistLatticeStr.∧lRid _)))
-    (λ _ _ → makeNatTransPath (funExt₂ (λ A _ → ZariskiLattice A .snd .DistLatticeStr.∧lComm _ _)))
-    (λ _ _ → makeNatTransPath (funExt₂ -- don't know why ∧lAbsorb∨l doesn't work
-               (λ A _ → ZariskiLattice A .snd .DistLatticeStr.absorb _ _ .snd)))
-    (λ _ _ _ → makeNatTransPath (funExt₂ -- same here
-                 (λ A _ → ZariskiLattice A .snd .DistLatticeStr.∧l-dist-∨l _ _ _ .fst)))
+    (λ U V W → makeNatTransPath (funExt₂ (λ A x →
+      ZariskiLattice A .snd .DistLatticeStr.∨lAssoc (U .N-ob A x) (V .N-ob A x) (W .N-ob A x))))
+    (λ U → makeNatTransPath (funExt₂ (λ A x →
+      ZariskiLattice A .snd .DistLatticeStr.∨lRid (U .N-ob A x))))
+    (λ U V → makeNatTransPath (funExt₂ (λ A x →
+      ZariskiLattice A .snd .DistLatticeStr.∨lComm (U .N-ob A x) (V .N-ob A x))))
+    (λ U V W → makeNatTransPath (funExt₂ (λ A x →
+      ZariskiLattice A .snd .DistLatticeStr.∧lAssoc (U .N-ob A x) (V .N-ob A x) (W .N-ob A x))))
+    (λ U → makeNatTransPath (funExt₂ (λ A x →
+      ZariskiLattice A .snd .DistLatticeStr.∧lRid (U .N-ob A x))))
+    (λ U V → makeNatTransPath (funExt₂ (λ A x →
+      ZariskiLattice A .snd .DistLatticeStr.∧lComm (U .N-ob A x) (V .N-ob A x))))
+    (λ U V → makeNatTransPath (funExt₂ -- don't know why ∧lAbsorb∨l doesn't work
+      (λ A x → ZariskiLattice A .snd .DistLatticeStr.absorb (U .N-ob A x) (V .N-ob A x) .snd)))
+    (λ U V W → makeNatTransPath (funExt₂ -- same here
+      (λ A x → ZariskiLattice A .snd .DistLatticeStr.∧l-dist-∨l
+                 (U .N-ob A x) (V .N-ob A x) (W .N-ob A x) .fst)))
 
   -- (contravariant) action on morphisms
   fst (F-hom CompOpenDistLattice α) = α ●ᵛ_

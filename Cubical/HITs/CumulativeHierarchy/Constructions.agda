@@ -101,7 +101,7 @@ module UnionSet (S : V ℓ) where
   unpack UnionPackage (vi , yi) = ∣ ⟪ S ⟫↪ vi , ∈ₛ⟪ S ⟫↪ vi , ∈ₛ⟪ ⟪ S ⟫↪ vi ⟫↪ yi ∣₁
   repack UnionPackage {y = y} = P.rec squash₁ go where
     go : Σ[ v ∈ V _ ] ⟨ v ∈ₛ S ⟩ ⊓′ ⟨ y ∈ₛ v ⟩ → ∥ fiber _ y ∥₁
-    go (v , (vi , vS) , xv) = ∣ repFiber≃fiber _ _ .fst ((vi , key .fst) , key .snd) ∣₁ where
+    go (v , (vi , vS) , xv) = ∣ repFiber≃fiber (SetStructure.ix UnionStructure) y .fst ((vi , key .fst) , key .snd) ∣₁ where
       path : v ≡ ⟪ S ⟫↪ vi
       path = sym (equivFun identityPrinciple vS)
       key : Σ[ i ∈ ⟪ ⟪ S ⟫↪ vi ⟫ ] ⟪ ⟪ S ⟫↪ vi ⟫↪ i ≊ y
